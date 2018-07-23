@@ -3,28 +3,28 @@ import Router from 'vue-router'
 
 Vue.use(Router)
 
-const cart = (resolve) => {
-  import('../views/cart').then((module) => {
+const Cart = (resolve) => {
+  import('../views/Cart').then((module) => {
     resolve(module)
   })
 }
-const address = (resolve) => {
-  import('../views/address').then((module) => {
+const Address = (resolve) => {
+  import('../views/Address').then((module) => {
     resolve(module)
   })
 }
-const goodsList = (resolve) => {
-  import('../views/goodsList').then((module) => {
+const GoodsList = (resolve) => {
+  import('../views/GoodsList').then((module) => {
     resolve(module)
   })
 }
-const orderConfirm = (resolve) => {
-  import('../views/orderConfirm').then((module) => {
+const OrderConfirm = (resolve) => {
+  import('../views/OrderConfirm').then((module) => {
     resolve(module)
   })
 }
-const orderSuccess = (resolve) => {
-  import('../views/orderSuccess').then((module) => {
+const OrderSuccess = (resolve) => {
+  import('../views/OrderSuccess').then((module) => {
     resolve(module)
   })
 }
@@ -33,29 +33,29 @@ const orderSuccess = (resolve) => {
 export default new Router({
   routes: [
     {
+      path: '/',
+      name: 'GoodsList',
+      component: GoodsList
+    },
+    {
       path: '/address',
-      name: 'address',
-      component: address
+      name: 'Address',
+      component: Address
     },
     {
       path: '/cart',
-      name: 'cart',
-      component: cart
-    },
-    {
-      path: '/goodsList',
-      name: 'goodsList',
-      component: goodsList
+      name: 'Cart',
+      component: Cart
     },
     {
       path: '/orderConfirm',
-      name: 'orderConfirm',
-      component: orderConfirm
+      name: 'OrderConfirm',
+      component: OrderConfirm
     },
     {
       path: '/orderSuccess',
-      name: 'orderSuccess',
-      component: orderSuccess
+      name: 'OrderSuccess',
+      component: OrderSuccess
     },
   ]
 })
