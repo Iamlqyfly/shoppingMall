@@ -84,7 +84,7 @@
 <script>
 import './../assets/css/base.css'
 import './../assets/css/product.css'
-// import './../assets/css/login.css'
+import './../assets/css/login.css'
 import NavHeader from './../components/NavHeader'
 import NavFooter from './../components/NavFooter'
 import NavBread from './../components/NavBread'
@@ -122,7 +122,6 @@ export default {
         priceChecked:'all', //选中的价格区间
         filterBy:false, //控制价格菜单的显示
         overLayFlag:false //遮罩的显示
-
       }
   },
   components: {

@@ -246,6 +246,217 @@ router.get("/addressList",function(req,res,next){
   })
 });
 
+//设置默认地址接口
+router.post("/setDefault",function(req, res, next) {
+  var userId = req.cookies.userId
+      addressId = req.cookies.addressId
+      if(!addressId) {
+        res.json({
+          status: '1003',
+          msg: 'addressId is null',
+          result: ''
+        })
+      }else {
+        User.findOne({
+          userId: userId
+        },function(err,doc) {
+          if(err) {
+            res.json({
+              status:'1003',
+              msg:'addressId is null',
+              result:''
+            })
+          }else {
+            User.findOne({userId:userId},function(err,doc){
+              if(err){
+                res.json({
+                  status:'1',
+                  msg:err.message,
+                  result:''
+                })
+              }else {
+                var addressList = doc.addressList
+                addressList.forEach( item => {
+                  if(item.addressId == addressId){
+                    item.isDefault = true
+                  }else {
+                    item.isDefault = false
+                  }
+                })
 
+                doc.save(function(err1,doc1) {
+                  if(err) {
+                    res.json({
+                      status: '1',
+                      msg: err.message,
+                      result: ''
+                    })
+                  }else {
+                    res.json({
+                      status: '0',
+                      msg: '',
+                      result: ''
+                    })
+                  }
+                })
+              }
+            })
+          }
+        })
+      }
+});
+
+//删除地址接口
+router.post("/delAddress", function (req,res,next) {
+  var userId = req.cookies.userId,addressId = req.body.addressId;
+  User.update({
+    userId:userId
+  },{
+    $pull:{
+      'addressList':{
+        'addressId':addressId
+      }
+    }
+  }, function (err,doc) {
+      if(err){
+        res.json({
+            status:'1',
+            msg:err.message,
+            result:''
+        });
+      }else{
+        res.json({
+          status:'0',
+          msg:'',
+          result:''
+        });
+      }
+  });
+});
+
+
+//创建订单页面
+router.post('/payMent', function(req,res,next){
+  // 前端传参：订单的地址id;订单最终的总金额
+  var userId = req.cookies.userId,
+      addressId = req.body.addressId,
+      orderTotal = req.body.orderTotal;
+  User.findeOne({userId:userId},function(err,doc){
+     if(err){
+       res.json({
+         status: '1',
+         msg: err.message,
+         result: ''
+       })
+     }else {
+        var address = '', goodsList = []
+        doc.addressList.forEach( item => {
+          if(addressId == item.addressId) {
+            address = item
+          }
+        })
+        //获取当前用户的购物车的购买商品
+        doc.cartList.filter(item => {
+          if(item.checked == '1') {
+            goodsList.push(item)
+          }
+        })
+        //创建订单ID
+        var plaform = '622' //平台系统架构码
+        var r1 = Math.floor(Math.random()*10)
+        var r2 = Math.floor(Math.random()*10)
+        
+        var sysDate = new Date().Format('yyyyMMMddhhmmss')  // 系统时间：年月日时分秒
+        var orderId = platform + r1 + sysDate+ r2 //21位
+        // 订单创建时间
+        var createData = new Date().Format('yyyy-MM-dd hh:mm:ss') 
+         
+        //生成订单
+        var order = {
+          orderId:orderId,           // 订单id
+          orderTotal:orderTotal,     // 订单总金额(直接拿前端传过来的参数)
+          addressInfo:address,       // 地址信息
+          goodsList:goodsList,       // 购买的商品信息
+          orderStatus:'1',           // 订单状态，1成功
+          createDate:createDate      // 订单创建时间
+        }
+
+        //订单信息存储到数据库
+        doc.orderList.push(order)
+
+        doc.save(function(err1,doc1) {
+          if(err1) {
+            res.json({
+              status: '1',
+              msg: err.message,
+              result: ''
+            })
+          }else {
+            // 返回订单的id和订单的总金额给前端，下一个页面要用到
+            res.json({
+              status:'0',
+              msg: '',
+              result: {
+                orderId:order.orderId,
+                orderTotal:order.orderTotal
+              }
+            })
+          }
+        })
+     }
+  })
+
+})   
+
+
+//订单成功页面 根据订单ID查询订单信息
+
+router.get("/orderDetail", function (req,res,next) {
+  var userId = req.cookies.userId,
+      orderId = req.param("orderId");   // 前端传过来的订单id
+  User.findOne({userId:userId}, function (err,userInfo) {
+      if(err){
+          res.json({
+              status:'1',
+              msg:err.message,
+              result:''
+          });
+      }else{
+          var orderList = userInfo.orderList;  // orderList订单列表
+          if(orderList.length>0){  // 说明有订单
+              var orderTotal = 0;
+              // 遍历订单列表，根据订单id得到该订单总金额orderTotal
+              orderList.forEach((item)=>{
+                  if(item.orderId == orderId){
+                      orderTotal = item.orderTotal;
+                  }
+              });
+              if(orderTotal>0){
+                  res.json({
+                      status:'0',
+                      msg:'',
+                      result:{
+                          orderId:orderId,
+                          orderTotal:orderTotal
+                      }
+                  })
+              }else{
+                  res.json({
+                      status:'120002',
+                      msg:'无此订单',
+                      result:''
+                  });
+              }
+          }else{
+              res.json({
+                  status:'120001',
+                  msg:'当前用户未创建订单',
+                  result:''
+              });
+          }
+      }
+  })
+});
 
 module.exports = router;
+

@@ -2,7 +2,7 @@
   <div>
     <nav-header></nav-header>
     <nav-bread>
-      <span>My Cart</span>
+      <span>/My Cart</span>
     </nav-bread>
     <div class="container">
       <div class="cart">
@@ -45,7 +45,7 @@
                     <div class="item-quantity">
                       <div class="select-self select-self-open">
                         <div class="select-self-area">
-                          <a class="input-sub"  @click="editCart('minu',item)">-</a>
+                          <a class="input-sub"  @click="editCart('minus',item)">-</a>
                           <span class="select-ipt">{{item.productNum}}</span>
                           <a class="input-add" @click="editCart('add',item)">+</a>
                         </div>
@@ -84,10 +84,133 @@ import axios from 'axios'
 import {currency} from '@/util/currency.js'  // 对价格格式化的通用方法
 
 export default {
+  data(){
+      return {
+        cartList:[],  // 购物车商品列表
+        delItem:{},  // 要删除的商品
+        modalConfirm:false   // 模态框是否显示
+        // checkAllFlag:false   // 控制全选
+      }
+    },
+    components:{
+      NavHeader,
+      NavFooter,
+      NavBread,
+      Modal
+    },
+    mounted:function(){
+      this.init();
+    },
 
+    filters: {
+      currency: currency
+    },
+
+    computed: {
+      checkAllFlag() {  //商品勾选数量=购物车商品列表种数时，返回true代表全选
+        return this.checkedCount == this.cartList.length
+      },
+      checkedCount(){ //商品勾选数量
+        var i = 0
+        this.cartList.forEach(item => {
+          if(item.checked == '1') i++
+        })
+        return i 
+      },
+      totalPrice() {
+        var money = 0;
+        this.cartList.forEach( item => {
+          if(item.checked == '1') {
+            money += parseFloat(item.salePrice) * parseInt(item.productNum)
+          }
+        })
+        return money
+      },
+    },
+    methods: {
+      init() {
+        axios.get('/users/cartList').then( response => {
+          let res = response.data
+          this.cartList = res.result
+        })
+      },
+      //点击删除图标
+      delCartConfirm(item) { 
+        this.modalConfirm = true
+        this.delItem = item
+      },
+
+      closeModal() {
+        this.modalConfirm = false
+      },
+      delCart() {
+        axios.post('/users/cartDel',{
+          productId: this.delItem.productId
+        }).then( response => {
+          let res = response.data
+          if(res.status = '0') {
+            this.modalConfirm = false
+            this.init() //重新初始化购物车数据
+
+            var delCount = this.delItem.productNum
+            
+          }
+        })
+      },
+      editCart(flag,item) {
+        if(flag == 'add') {
+          item.productNum++
+        }else if(flag == 'minus'){
+          if(item.productNum <= 1) {
+            return
+          }
+          item.productNum--
+        }else { //商品控制选中
+          item.checked = (item.checked == '1') ? '0': '1'
+        }
+
+        axios.post('/users/cartList',{
+          productId:item.productId,
+          productNum:item.productNum,
+          checked:item.checked
+        }).then( response => {
+          let res = response.data
+          let num = 0 //右上角购物车数量更新
+          if(flag == 'add') {
+            num = +1
+          }else if (flag == 'minus'){
+            num = -1
+          }
+          // this.$store.commit("updateCartCount",num);
+        })
+      },
+      toggleCheckAll() {
+        //  不能用这种方法，computed是实时计算属性，若true变成false后，还没来得及执行商品取消勾选操作
+        //  就实时计算检测到了勾选的商品种数=购物车列表的商品种数，就又变成全选了 
+        // this.checkAllFlag = !this.checkAllFlag; 
+      
+        var flag = !this.checkAllFlag //声明变量取代
+        this.cartList.forEach( item => {
+          item.checked = flag ? '1': '0'
+        })
+        axios.post('/users/editCheckAll',{
+          checkAll: flag
+        }).then( response => {
+          let res = response.data
+          if(res.status == '0'){
+            console.log('update suc')
+          }
+        })
+      },
+      checkOut() { // 已勾选的商品种数 >0 时才可以跳转到地址列表页
+        if(this.checkedCount > 0) {
+          this.$router.push({ path: '/address'})
+        }
+      }
+    }
 }
 </script>
 
-<style>
+<style scoped>
 
 </style>

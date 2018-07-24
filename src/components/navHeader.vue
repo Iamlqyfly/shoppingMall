@@ -44,7 +44,7 @@
         </div>
       </div>
     </div>
-    <!-- <div class="md-modal modal-msg md-modal-transition" v-bind:class="{'md-show':loginModalFlag}">
+    <div class="md-modal modal-msg md-modal-transition" v-bind:class="{'md-show':loginModalFlag}">
       <div class="md-modal-inner">
         <div class="md-top">
           <div class="md-title">Login in</div>
@@ -72,7 +72,7 @@
           </div>
         </div>
       </div>
-    </div> -->
+    </div>
     <div class="md-overlay" v-if="loginModalFlag" @click="loginModalFlag=false"></div>
   </header>
 </template>
@@ -94,12 +94,12 @@ export default {
   },
   computed:{
     // ...mapState(['nickName','cartCount']) 
-    /*nickName() {
+    nickName() {
       return this.$store.state.nickName;
     },
     cartCount() {
       return this.$store.state.cartCount;
-    }*/
+    }
 
   },
   mounted() {
@@ -107,50 +107,50 @@ export default {
   },
   methods: {
     checkLogin() {
-      // axios.get("users/checkLogin").then((response) => {
-      //   let res = response.data;
-      //   if(res.status=='0'){
-      //     //this.nickName = res.result;
-      //     // this.$store.commit("updateUserInfo",res.result);
-      //     // this.getCartCount();
-      //   }
-      // });
+      axios.get("users/checkLogin").then((response) => {
+        let res = response.data;
+        if(res.status=='0'){
+          this.nickName = res.result;
+          // this.$store.commit("updateUserInfo",res.result);
+          this.getCartCount();
+        }
+      });
     },
     login () {
-      // if(!this.userName || !this.userPwd) {
-      //   this.errorTip = true;
-      //   return;
-      // }
-      // axios.post("/users/login",{
-      //   userName:this.userName,
-      //   userPwd:this.userPwd
-      // }).then((response) => {
-      //   let res = response.data;
-      //   if(res.status=="0"){
-      //     this.errorTip = false;
-      //     this.loginModalFlag = false;
-      //     // this.$store.commit("updateUserInfo",res.result.userName);
-      //     // this.getCartCount();
-      //   } else{
-      //     this.errorTip = true;
-      //   }
-      // });
+      if(!this.userName || !this.userPwd) {
+        this.errorTip = true;
+        return;
+      }
+      axios.post("/users/login",{
+        userName:this.userName,
+        userPwd:this.userPwd
+      }).then((response) => {
+        let res = response.data;
+        if(res.status=="0"){
+          this.errorTip = false;
+          this.loginModalFlag = false;
+          // this.$store.commit("updateUserInfo",res.result.userName);
+          // this.getCartCount();
+        } else{
+          this.errorTip = true;
+        }
+      });
     },
     logOut() {
-      // axios.post("/users/logout").then((response) =>{
-      //   let res = response.data;
-      //   if(res.status=="0"){
-      //     this.nickName='';
-      //     // this.$store.commit("updateUserInfo",'');
-      //   }
-      // })
+      axios.post("/users/logout").then((response) =>{
+        let res = response.data;
+        if(res.status=="0"){
+          this.nickName='';
+          // this.$store.commit("updateUserInfo",'');
+        }
+      })
     },
-    // getCartCount(){
-    //   axios.get("users/getCartCount").then((response)=>{
-    //     // var res = response.data;
-    //     this.$store.commit("initCartCount",res.result);
-    //   });
-    // }
+    getCartCount(){
+      axios.get("users/getCartCount").then((response)=>{
+        // var res = response.data;
+        this.$store.commit("initCartCount",res.result);
+      });
+    }
   }
 }
 </script>
