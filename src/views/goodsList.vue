@@ -2,7 +2,7 @@
   <div>
     <nav-header></nav-header>
       <nav-bread>
-        <span>/Goods</span>
+        <span>Goods</span>
       </nav-bread>
       <div class="accessory-result-page accessory-page">
         <div class="container">
@@ -10,7 +10,7 @@
             <span class="sortby">Sort by:</span>
             <a href="javascript:void(0)" class="default cur">Default</a>
             <a href="javascript:void(0)" class="price" @click="sortGoods">Price 
-              <svg class="icon icon-arrow-short" v-bind:class="{'sort-up':!sortFlag}">
+              <svg class="icon icon-arrow-short" :class="{'sort-up':!sortFlag}">
                 <use xlink:href="#icon-arrow-short"></use>
               </svg>
             </a>
@@ -18,12 +18,12 @@
           </div>
           <div class="accessory-result">
             <!-- filter -->
-            <div class="filter stopPop" id="filter" v-bind:class="{'filterby-show':filterBy}">
+            <div class="filter stopPop" id="filter" :class="{'filterby-show':filterBy}">
               <dl class="filter-price">
                 <dt>Price:</dt>
-                <dd><a href="javascript:void(0)" v-bind:class="{'cur':priceChecked=='all'}" @click="setPriceFilter('all')">All</a></dd>
+                <dd><a href="javascript:void(0)" :class="{'cur':priceChecked=='all'}" @click="setPriceFilter('all')">All</a></dd>
                 <dd v-for="(price,index) in priceFilter" :key="price.id">
-                  <a href="javascript:void(0)" v-bind:class="{'cur':priceChecked==index}"  @click="setPriceFilter(index)">{{ price.startPrice }} - {{ price.endPrice }}</a>
+                  <a href="javascript:void(0)" :class="{'cur':priceChecked==index}"  @click="setPriceFilter(index)">{{ price.startPrice }} - {{ price.endPrice }}</a>
                 </dd>
               </dl>
             </div>
@@ -57,7 +57,7 @@
 
         </div>
         <div class="md-overlay" v-show="overLayFlag" @click="closePop"></div>
-        <modal v-bind:mdShow="mdShow" v-on:close="closeModal">
+        <modal :mdShow="mdShow" @close="closeModal">
           <p slot="message">
             请先登录，否则无法加入购物车
           </p>
@@ -65,7 +65,7 @@
             <a class="btn btn--m" href="javascript:;" @click="mdShow = false">关闭</a>
           </div>
         </modal>
-        <modal v-bind:mdShow="mdShowCart" v-on:close="closeModal">
+        <modal :mdShow="mdShowCart" @close="closeModal">
           <p slot="message">
             <svg class="icon-status-ok">
               <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-status-ok"></use>
@@ -78,6 +78,8 @@
           </div>
         </modal>
       </div>
+      <!-- 底部组件 -->
+      <nav-footer></nav-footer>
   </div>
 </template>
 

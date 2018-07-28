@@ -2,9 +2,8 @@
   <div>
     <nav-header></nav-header>
     <nav-bread>
-      <span>/Address</span>
+      <span>Address</span>
     </nav-bread>
-
     <div class="checkout-page">
       <div class="container">
         <div class="checkout-addr">
@@ -46,7 +45,8 @@
                     </a>
                   </div>
                   <div class="addr-opration addr-set-default">
-                    <a href="javascript:;" class="addr-set-default-btn" v-if="!item.isDefault" @click="setDefault(item.addressId)"><i>Set default</i></a>
+                    <a href="javascript:;" class="addr-set-default-btn" v-if="!item.isDefault"
+                     @click="setDefault(item.addressId)"><i>Set default</i></a>
                   </div>
                   <div class="addr-opration addr-default" v-if="item.isDefault">Default address</div>
                 </li>
@@ -65,7 +65,7 @@
 
             <div class="shipping-addr-more">
               <a class="addr-more-btn up-down-btn" href="javascript:;"  
-                @click="expand" v-bind:class="{'open':limit>3}">
+                @click="expand" :class="{'open':limit>3}">
                   more
                   <i class="i-up-down">
                     <i class="i-up-down-l"></i>
@@ -96,7 +96,7 @@
           </div> 
           <div class="next-btn-wrap">
             <!-- a标签跳转 -->
-            <router-link class="btn btn--m btn--red" v-bind:to="{path:'/orderConfirm',query:{'addressId':selectedAddrId}}">Next</router-link>
+            <router-link class="btn btn--m btn--red" :to="{path:'/orderConfirm',query:{'addressId':selectedAddrId}}">Next</router-link>
           </div> 
         </div>
       </div>    
@@ -111,6 +111,8 @@
           <a class="btn btn--m btn--red" href="javascript:;" @click="isMdShow=false">取消</a>
         </div>
       </modal>
+      <!-- 底部组件 -->
+      <nav-footer></nav-footer>
   </div>
 </template>
 
@@ -119,7 +121,7 @@ import NavHeader from '@/components/NavHeader.vue'  // 头部
 import NavFooter from '@/components/NavFooter.vue'  // 底部
 import NavBread from '@/components/NavBread.vue'  // 面包屑
 import Modal from '@/components/Modal.vue'  // 模态框
-import axios from 'axios'
+// import axios from 'axios'
 export default {
     data() {
       return {
@@ -185,8 +187,6 @@ export default {
           }
         })
       },
-
-
     },
 }
 </script>

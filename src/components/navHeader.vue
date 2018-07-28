@@ -80,12 +80,12 @@
 <script>
 import './../assets/css/login.css'
 import axios from 'axios'
-// import { mapState } from 'vuex'
+import { mapState } from 'vuex'
 export default {
   data () {
       return {
-        nickName: '',
-        cartCount: '',
+        // nickName: '',
+        // cartCount: '',
         userName:'admin',
         userPwd:'123456',
         errorTip:false,
@@ -93,13 +93,14 @@ export default {
       }
   },
   computed:{
-    // ...mapState(['nickName','cartCount']) 
-    nickName() {
-      return this.$store.state.nickName;
-    },
-    cartCount() {
-      return this.$store.state.cartCount;
-    }
+    ...mapState(['nickName','cartCount'])
+    ///等价于下面nickName cartCount写法
+    // nickName() {
+    //   return this.$store.state.nickName;
+    // },
+    // cartCount() {
+    //   return this.$store.state.cartCount;
+    // }
 
   },
   mounted() {
@@ -110,8 +111,8 @@ export default {
       axios.get("users/checkLogin").then((response) => {
         let res = response.data;
         if(res.status=='0'){
-          this.nickName = res.result;
-          // this.$store.commit("updateUserInfo",res.result);
+          // this.nickName = res.result;
+          this.$store.commit("updateUserInfo",res.result);
           this.getCartCount();
         }
       });
@@ -129,8 +130,8 @@ export default {
         if(res.status=="0"){
           this.errorTip = false;
           this.loginModalFlag = false;
-          // this.$store.commit("updateUserInfo",res.result.userName);
-          // this.getCartCount();
+          this.$store.commit("updateUserInfo",res.result.userName);
+          this.getCartCount();
         } else{
           this.errorTip = true;
         }
@@ -140,8 +141,8 @@ export default {
       axios.post("/users/logout").then((response) =>{
         let res = response.data;
         if(res.status=="0"){
-          this.nickName='';
-          // this.$store.commit("updateUserInfo",'');
+          // this.nickName='';
+          this.$store.commit("updateUserInfo",'');
         }
       })
     },

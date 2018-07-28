@@ -37,6 +37,8 @@
         </div>
       </div>
     </div>
+     <!-- 底部组件 -->
+    <nav-footer></nav-footer>
   </div>
 </template>
 

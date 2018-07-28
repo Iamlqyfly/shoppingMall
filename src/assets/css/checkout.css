@@ -351,12 +351,14 @@ html {
 }
 
 .cart-item-head {
+  /* 此元素会作为一个或多个行的分组来显示（类似 <thead>） */
   display: table-header-group;
   width: 100%;
 }
 
 .cart-item-head ul {
-  display: table-row;
+  /* 此元素会作为一个表格行开始 */
+  display: table-row; 
   width: 100%;
 }
 

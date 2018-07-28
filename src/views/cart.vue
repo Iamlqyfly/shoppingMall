@@ -2,7 +2,7 @@
   <div>
     <nav-header></nav-header>
     <nav-bread>
-      <span>/My Cart</span>
+      <span>My Cart</span>
     </nav-bread>
     <div class="container">
       <div class="cart">
@@ -11,7 +11,6 @@
             <span>My Cart</span>
           </h2>
         </div>
-
         <div class="item-list-wrap">
           <div class="cart-item">
             <div class="cart-item-head">
@@ -41,6 +40,9 @@
                   <div class="cart-item-title">
                     <div class="item-name">{{item.productName}}</div>
                   </div>
+                  <div class="cart-tab-2">
+                    <div class="item-price">{{item.salePrice | currency('$')}}</div>
+                  </div>
                   <div class="cart-tab-3">
                     <div class="item-quantity">
                       <div class="select-self select-self-open">
@@ -68,10 +70,35 @@
               </li>
             </ul>
           </div>
+          <div class="cart-foot-wrap">
+            <div class="cart-foot-inner">
+              <div class="cart-foot-l">
+                <div class="item-all-check">
+                  <a href="javascipt:;" @click="toggleCheckAll">
+                        <span class="checkbox-btn item-check-btn" 
+                        :class="{'check':checkAllFlag}">
+                            <svg class="icon icon-ok"><use xlink:href="#icon-ok"/></svg>
+                        </span>
+                    <span>Select all</span>
+                  </a>
+                </div>
+              </div>
+              <div class="cart-foot-r">
+                <div class="item-total">
+                  Item total: <span class="total-price">{{totalPrice | currency('$')}}</span>
+                </div>
+                <div class="btn-wrap">
+                  <a class="btn btn--red" v-bind:class="{'btn--dis':checkedCount==0}" @click="checkOut">Checkout</a>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>   
         
       </div>
     </div>
+    <!-- 底部组件 -->
+    <nav-footer></nav-footer>
   </div>
 </template>
 
