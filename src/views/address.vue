@@ -121,7 +121,7 @@ import NavHeader from '@/components/NavHeader.vue'  // 头部
 import NavFooter from '@/components/NavFooter.vue'  // 底部
 import NavBread from '@/components/NavBread.vue'  // 面包屑
 import Modal from '@/components/Modal.vue'  // 模态框
-// import axios from 'axios'
+import axios from 'axios'
 export default {
     data() {
       return {

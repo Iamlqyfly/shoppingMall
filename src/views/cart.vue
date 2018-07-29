@@ -21,7 +21,7 @@
                 <li>Subtotal</li>
                 <li>Edit</li>
               </ul>
-            </div>
+            </div>  
             <ul class="cart-item-list">
               <li v-for="item in cartList" :key="item.id">
                 <div class="cart-tab-1">
@@ -40,31 +40,31 @@
                   <div class="cart-item-title">
                     <div class="item-name">{{item.productName}}</div>
                   </div>
-                  <div class="cart-tab-2">
-                    <div class="item-price">{{item.salePrice | currency('$')}}</div>
-                  </div>
-                  <div class="cart-tab-3">
-                    <div class="item-quantity">
-                      <div class="select-self select-self-open">
-                        <div class="select-self-area">
-                          <a class="input-sub"  @click="editCart('minus',item)">-</a>
-                          <span class="select-ipt">{{item.productNum}}</span>
-                          <a class="input-add" @click="editCart('add',item)">+</a>
-                        </div>
+                </div>  
+                <div class="cart-tab-2">
+                  <div class="item-price">{{item.salePrice | currency('$')}}</div>
+                </div>
+                <div class="cart-tab-3">
+                  <div class="item-quantity">
+                    <div class="select-self select-self-open">
+                      <div class="select-self-area">
+                        <a class="input-sub"  @click="editCart('minus',item)">-</a>
+                        <span class="select-ipt">{{item.productNum}}</span>
+                        <a class="input-add" @click="editCart('add',item)">+</a>
                       </div>
                     </div>
                   </div>
-                  <div class="cart-tab-4">
-                    <div class="item-price-total">{{(item.productNum*item.salePrice) | currency('$')}}</div>
-                  </div>
-                  <div class="cart-tab-5">
-                    <div class="cart-item-opration">
-                      <a href="javascript:;" class="item-edit-btn" @click="delCartConfirm(item)">
-                        <svg class="icon icon-del">
-                          <use xlink:href="#icon-del"></use>
-                        </svg>
-                      </a>
-                    </div>
+                </div>
+                <div class="cart-tab-4">
+                  <div class="item-price-total">{{(item.productNum*item.salePrice) | currency('$')}}</div>
+                </div>
+                <div class="cart-tab-5">
+                  <div class="cart-item-opration">
+                    <a href="javascript:;" class="item-edit-btn" @click="delCartConfirm(item)">
+                      <svg class="icon icon-del">
+                        <use xlink:href="#icon-del"></use>
+                      </svg>
+                    </a>
                   </div>
                 </div>
               </li>
@@ -75,10 +75,12 @@
               <div class="cart-foot-l">
                 <div class="item-all-check">
                   <a href="javascipt:;" @click="toggleCheckAll">
-                        <span class="checkbox-btn item-check-btn" 
-                        :class="{'check':checkAllFlag}">
-                            <svg class="icon icon-ok"><use xlink:href="#icon-ok"/></svg>
-                        </span>
+                    <span class="checkbox-btn item-check-btn" 
+                    :class="{'check':checkAllFlag}">
+                      <svg class="icon icon-ok">
+                        <use xlink:href="#icon-ok"/>
+                      </svg>
+                    </span>
                     <span>Select all</span>
                   </a>
                 </div>
@@ -94,7 +96,6 @@
             </div>
           </div>
         </div>   
-        
       </div>
     </div>
     <!-- 底部组件 -->
@@ -208,7 +209,7 @@ export default {
           }else if (flag == 'minus'){
             num = -1
           }
-          // this.$store.commit("updateCartCount",num);
+          this.$store.commit("updateCartCount",num);
         })
       },
       toggleCheckAll() {
@@ -238,6 +239,6 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 
 </style>

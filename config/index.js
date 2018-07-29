@@ -16,10 +16,30 @@ module.exports = {
     host: 'localhost', // can be overwritten by process.env.HOST
     port: 8080, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
     autoOpenBrowser: false,
+    assetsSubDirectory: 'static',
+    assetsPublicPath: '/',
+    proxyTable: {     // 是一个代理插件，方便做转发，不需要跨域了。仅限于开发使用,开发完之后一定要跟服务器端连接在一起，否则需要nginx转发配置
+        // '/api': {
+        //     target: 'http://localhost:3000',
+        //     changeOrigin: true,
+        //     pathRewrite: {
+        //       '^/api': ''
+        //     }
+        //   },
+        '/goods':{  // 当我们访问'/goods'的时候，会转发到express的localhost:3000下面，访问3000下面的'/goods';
+            target:'http://localhost:3000'
+        },
+        '/goods/*':{
+            target:'http://localhost:3000'
+        },
+        '/users/*':{   // users/路由的下一级路由
+            target:'http://localhost:3000'
+        }
+    },
     errorOverlay: true,
     notifyOnErrors: true,
     poll: false, // https://webpack.js.org/configuration/dev-server/#devserver-watchoptions-
-
+     
     
     /**
      * Source Maps

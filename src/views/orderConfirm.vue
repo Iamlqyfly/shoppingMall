@@ -40,7 +40,7 @@
               <li v-for="item in cartList" :key="item.id" v-if="item.checked == '1'">
                 <div class="cart-tab-1">
                   <div class="cart-item-pic">
-                    <img :src="'/static'+item.productImage" :alt="item.productName">
+                    <img :src="'/static/'+item.productImage" :alt="item.productName">
                   </div>
                   <div class="cart-item-title">
                     <div class="item-name">{{item.productName}}</div>
@@ -154,6 +154,7 @@ export default {
       axios.get('/users/cartList').then( response => {
         let res = response.data
         this.cartList = res.result
+        console.log(res.result,1)
 
         this.cartList.forEach(item => { 
           if(item.checked == '1') { // 遍历购物车商品，获取选中商品的总金额
@@ -175,7 +176,6 @@ export default {
         let res = response.data;
         if(res.status == '0'){
           console.log('order created success');
-
           // 路由跳转到订单成功页面
           this.$router.push({
             path:'/orderSuccess?orderId='+res.result.orderId

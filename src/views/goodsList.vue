@@ -132,7 +132,17 @@ export default {
     NavBread,
     Modal
   },
+  mounted() {
+    this.getGoodsList()
+  },
   methods: {
+    //原来mock数据的请求接口
+    // getGoodsList(){
+    //   axios.get('/goods').then( result => {
+    //     var res = result.data
+    //     this.goodsList = res.result
+    //   })
+    // },
     getGoodsList(flag) {
       var param = {
         page: this.page,
@@ -144,6 +154,7 @@ export default {
       axios.get("/goods/list",{
         params: param
         }).then( res => {
+          console.log(res.result)
           var res = res.data
           this.loading = false
           if(res.status == "0") {

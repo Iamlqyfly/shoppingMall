@@ -142,13 +142,14 @@ export default {
         let res = response.data;
         if(res.status=="0"){
           // this.nickName='';
-          this.$store.commit("updateUserInfo",'');
+          this.$store.commit("updateUserInfo",res.result.userName);
         }
       })
     },
     getCartCount(){
       axios.get("users/getCartCount").then((response)=>{
-        // var res = response.data;
+        var res = response.data;
+        console.log(res)
         this.$store.commit("initCartCount",res.result);
       });
     }
