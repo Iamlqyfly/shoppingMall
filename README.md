@@ -36,6 +36,7 @@ vue2 + vuex + vue-router + webpack4 +  axios + svg + node + mongoDB + mongoose +
 + 地址模块（设置默认地址，删除）、订单生成（生成订单号，收货人信息，并插入数据库）
 
 ### 项目目录
+```
 | - build
 | - config
 | - mock     -- json静态数据
@@ -65,7 +66,7 @@ vue2 + vuex + vue-router + webpack4 +  axios + svg + node + mongoDB + mongoose +
     | - App.vue
     | - main.js
 | - static   -- 项目所用图片，图标
-
+```
 
 ### 前端
 #### svg的使用
